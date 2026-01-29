@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SME Growth Journey - Collaborative Service Network</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        
+        h1 {
+            text-align: center;
+            color: #2d3748;
+            margin-bottom: 10px;
+            font-size: 2em;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #718096;
+            margin-bottom: 30px;
+            font-size: 1.1em;
+        }
+        
+        .controls {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 15px;
+            background: #f7fafc;
+            border-radius: 8px;
+        }
+        
+        .controls button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 0 10px;
+            transition: all 0.3s;
+        }
+        
+        .controls button:hover {
+            background: #5a67d8;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+        
+        .journey-flow {
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+        }
+        
+        .stage {
+            border: 3px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 25px;
+            background: linear-gradient(to right, #f7fafc, #ffffff);
+            position: relative;
+            transition: all 0.3s;
+        }
+        
+        .stage:hover {
+            border-color: #667eea;
+            box-shadow: 0 8px 24px rgba(102, 126, 234, 0.15);
+        }
+        
+        .stage-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+        
+        .stage-number {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: bold;
+            margin-right: 20px;
+            flex-shrink: 0;
+        }
+        
+        .stage-title {
+            flex-grow: 1;
+        }
+        
+        .stage-title h2 {
+            color: #2d3748;
+            font-size: 1.5em;
+            margin-bottom: 5px;
+        }
+        
+        .stage-subtitle {
+            color: #718096;
+            font-size: 0.95em;
+        }
+        
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .service-card {
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 15px;
+            transition: all 0.3s;
+        }
+        
+        .service-card:hover {
+            border-color: #667eea;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        
+        .service-title {
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 8px;
+            font-size: 1em;
+        }
+        
+        .service-description {
+            color: #718096;
+            font-size: 0.85em;
+            margin-bottom: 12px;
+            line-height: 1.4;
+        }
+        
+        .name-input {
+            width: 100%;
+            padding: 8px 12px;
+            border: 2px solid #e2e8f0;
+            border-radius: 6px;
+            font-size: 0.9em;
+            transition: all 0.3s;
+            background: #f7fafc;
+        }
+        
+        .name-input:focus {
+            outline: none;
+            border-color: #667eea;
+            background: white;
+        }
+        
+        .name-input::placeholder {
+            color: #a0aec0;
+        }
+        
+        .dependencies {
+            margin-top: 20px;
+            padding: 15px;
+            background: #fff5f5;
+            border-left: 4px solid #fc8181;
+            border-radius: 6px;
+        }
+        
+        .dependencies-title {
+            font-weight: 600;
+            color: #c53030;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .dependencies-title::before {
+            content: "⚠️";
+            margin-right: 8px;
+        }
+        
+        .dependencies-text {
+            color: #742a2a;
+            font-size: 0.9em;
+        }
+        
+        .arrow-down {
+            text-align: center;
+            color: #667eea;
+            font-size: 2em;
+            margin: -20px 0;
+            position: relative;
+            z-index: 1;
+        }
+        
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+            
+            .container {
+                box-shadow: none;
+            }
+            
+            .controls {
+                display: none;
+            }
+            
+            .stage {
+                page-break-inside: avoid;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            h1 {
+                font-size: 1.5em;
+            }
+            
+            .stage-title h2 {
+                font-size: 1.2em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>SME Growth Journey: Collaborative Service Network</h1>
+        <p class="subtitle">From Working Prototype to International Scale-Up</p>
+        
+        <div class="controls">
+            <button onclick="saveData()">💾 Save Names</button>
+            <button onclick="loadData()">📂 Load Saved Names</button>
+            <button onclick="clearData()">🗑️ Clear All Names</button>
+            <button onclick="window.print()">🖨️ Print</button>
+        </div>
+        
+        <div class="journey-flow">
+            <!-- Stage 1 -->
+            <div class="stage">
+                <div class="stage-header">
+                    <div class="stage-number">1</div>
+                    <div class="stage-title">
+                        <h2>Validation & Protection</h2>
+                        <div class="stage-subtitle">Working Prototype Stage</div>
+                    </div>
+                </div>
+                <div class="services-grid">
+                    <div class="service-card">
+                        <div class="service-title">IP Specialist</div>
+                        <div class="service-description">Patent/trademark strategy, freedom-to-operate analysis</div>
+                        <input type="text" class="name-input" placeholder="Enter name..." data-role="ip-specialist">
+                    </div>
+                    <div class="service-card">
+                        <div class="service-title">Legal Advisor</div>
+                        <div class="service-description">NDAs, IP assignment, founder agreements</div>
+                        <input type="text" class="name-input" placeholder="Enter name..." data-role="legal-1">
+                    </div>
+                    <div class="service-card">
+                        <div class="service-title">Insurance Broker</div>
+                        <div class="service-description">Professional indemnity, product liability</div>
+                        <input type="text" class="name-input" placeholder="Enter name..." data-role="insurance-1">
+                    </div>
+                    <div class="service-card">
+                        <div class="service-title">Market Research Consultant</div>
+                        <div class="service-description">Customer validation, competitor landscape</div>
+                        <input type="text" class="name-input" placeholder="Enter name..." data-role="market-research">
+                    </div>
+                    <div class="service-card">
+                        <div class="service-title">Technical Consultant</div>
+                        <div class="service-description">Prototype refinement, manufacturability</div>
+                        <input type="text" class="name-input" placeholder="Enter name..." data-role="technical-1">
+                    </div>
+                </div>
+                <div class="dependencies">
+                    <div class="dependencies-title">Critical Dependency</div>
+                    <div class="dependencies-text">IP protection MUST precede any external demonstrations or partnership discussions</div>
+                </div>
+            </div>
+            
+            <div class="arrow-down">↓</div>
+            
+            <!-- Stage 2 -->
+            <div class="stage">
+                <div class="stage-header">
+                    <div class="stage-number">2</div>
+                    <div class="stage-title">
+                        <h2>Proof of Concept & Early Funding</h2>
+                        <div class="stage-subtitle">Grant Applications & Initial Investment</div>
+                    </div>
+                </div>
+                <div class="services-grid">
+                    <div class="service-card">
+                        <div class="service-title">Grant Writing Specialist</div>
+                        <div class="service-description">Innovate UK Smart grants, R&D tax credits</div>
+                        <input type="text" class="name-input" placeholder="Enter name..." data-role="grant-writer">
+                    </div>
+                    <div class="service-card">
+                        <div class="service-title">Financial Advisor</div>
+                        <div class="service-description">Business model validation, unit economics</div>
+                        <input type="text" class="name-input" placeholder="Enter name..." data-role="financial-advisor">
+                    </div>
+                    <div class="service-card">
+                        <div class="service-title">Pitch Coach</div>
+                        <div class="service-description">Investor deck development, presentation skills</div>
+                        <input type="text" class="name-input" placeholder="Enter name..." data-role="pitch-coach">
+                    </div>
+                    <div class="service-card">
+                        <div class="service-title">Regulatory Consultant</div>
+                        <div class="service-description">Compliance roadmap (sector-specific)</div>
+                        <input type="text" class="name-input" placeholder="Enter name..." data-role="regulatory">
+                    </div>
+                    <div class="service-card">
+                        <div class="service-title">Business Development Advisor</div>
+                        <div class="service-description">Pilot opportunities, demonstration setup</div>
+                        <input type="text" class="name-input" placeholder="Enter name..." data-role="bd-2">
+                    </div>
+                </div>
+                <div class="dependencies">
+                    <div class="dependencies-title">Critical Dependency</div>
+                    <div class="dependencies-text">Grant applications require solid financials + IP strategy in place</div>
+                </div>
+            </div>
+            
+            <div class="arrow-down">↓</div>
+            
+            <!-- Stage 3 -->
+            <div class="stage">
+                <div class="stage-header">
+                    <div class="stage-number">3</div>
+                    <div class="stage-title">
+                        <h2>Pilot & Market Entry</h2>
+                        <div class="stage-subtitle">First Customers & Revenue</div>
+                    </div>
+                </div>
+                <div class="services-grid">
+                    <div class="service-card">
+                        <div class="service-title">Sales Strategist</div>
+                        <div class="service-description">Pilot negotiations, contract structure, pricing</div>
+                        <input type="text" class="name-input" placeholder="Enter name..." data-role="sales-strategist">
+                    </div>
+                    <div class="service-card">
+                        <div class="service-title">Operations Consultant</div>
+                        <div class="service-description">Fulfillment processes, quality systems</div>
+                        <input type="text" class="name-input" placeholder="Enter name..." data-role="operations">
+                    </div>
+                    <div class="service-card">
+                        <div class="service-title">Marketing Specialist</div>
+                        <div class="service-description">Value proposition, early customer messaging</div>
+                        <input type="text" class="name-input" placeholder="Enter name..." data-role="marketing-3">
+                    </div>
+                    <div class="service-card">
+                        <div class="service-title">Legal Advisor</div>
+                        <div class="service-description">Pilot agreements, T&Cs, data protection</div>
+                        <input type="text" class="name-input" placeholder="Enter name..." data-role="legal-3">
+                    </div>
+                    <div class="service-card">
+                        <div class="service-title">Financial Controller</div>
+                        <div class="service-description">Cashflow management, invoicing systems</div>
+                        <input type="text" class="name-input" placeholder="Enter name..." data-role="financial-controller">
+                    </div>
+                </div>
+                <div class="dependencies">
+                    <div class="dependencies-title">Critical Dependency</div>
+                    <div class="dependencies-text">Successful pilots require operational capacity + legal frameworks</div>
+                </div>
+            </div>
+            
+            <div class="arrow-down">↓</div>
+            
+            <!-- Stage 4 -->
+            <div class="stage">
+                <div class="stage-header">
+                    <div class="stage-number">4</div>
+                    <div class="stage-title">
+                        <h2>Investment Readiness</h2>
+                        <div class="stage-subtitle">Preparing for Seed/Series A</div>
+                    </div>
+                </div>
+                <div class="services-grid">
+                    <div class="service-card">
+                        <div class="service-title">Investment Advisor</div>
+                        <div class="service-description">Investor targeting, due diligence prep, cap table</div>
+                        <input type="text" class="name-input" placeholder="Enter name..." data-role="investment-advisor">
+                    </div>
+                    <div class="service-card">
+                        <div class="service-title">CFO-for-Hire</div>
+                        <div class="service-description">Financial projections, KPIs, investor reporting</div>
+                        <input type="text" class="name-input" placeholder="Enter name..." data-role="cfo">
+                    </div>
+                    <div class="service-card">
+                        <div class="service-title">Corporate Lawyer</div>
+                        <div class="service-description">Shareholder agreements, investment term sheets</div>
+                        <input type="text" class="name-input" placeholder="Enter name..." data-role="corporate-lawyer">
+                    </div>
+                    <div class="service-card">
+                        <div class="service-title">HR Consultant</div>
+                        <div class="service-description">Team scaling plan, equity/option schemes</div>
+                        <input type="text" class="name-input" placeholder="Enter name..." data-role="hr-consultant">
+                    </div>
+                    <div class="service-card">
+                        <div class="service-title">Business Development</div>
+                        <div class="service-description">Revenue pipeline evidence, customer references</div>
+                        <input type="text" class="name-input" placeholder="Enter name..." data-role="bd-4">
+                    </div>
+                </div>
+                <div class="dependencies">
+                    <div class="dependencies-title">Critical Dependency</div>
+                    <div class="dependencies-text">Investment requires clean IP, demonstrated traction, credible financials</div>
+                </div>
+            </div>
+            
+            <div class="arrow-down">↓</div>
+            
+            <!-- Stage 5 -->
+            <div class="stage">
+                <div class="stage-header">
+                    <div class="stage-number">5</div>
+                    <div class="stage-title">
+                        <h2>Scale-Up</h2>
+                        <div class="stage-subtitle">Rapid Growth & Team Building</div>
+                    </div>
+                </div>
+                <div class="services-grid">
+                    <div class="service-card">
+                        <div class="service-title">Growth Marketing Specialist</div>
+                        <div class="service-description">Customer acquisition, digital marketing</div>
+                        <input type="text" class="name-input" placeholder="Enter name..." data-role="growth-marketing">
+                    </div>
+                    <div class="service-card">
+                        <div class="service-title">Recruitment Consultant</div>
+                        <div class="service-description">Senior hire sourcing, assessment</div>
+                        <input type="text" class="name-input" placeholder="Enter name..." data-role="recruitment">
+                    </div>
+                    <div class="service-card">
+                        <div class="service-title">Systems Integration Specialist</div>
+                        <div class="service-description">CRM, ERP, accounting software implementation</div>
+                        <input type="text" class="name-input" placeholder="Enter name..." data-role="systems">
+                    </div>
+                    <div class="service-card">
+                        <div class="service-title">Supply Chain Consultant</div>
+                        <div class="service-description">Vendor management, logistics optimization</div>
+                        <input type="text" class="name-input" placeholder="Enter name..." data-role="supply-chain">
+                    </div>
+                    <div class="service-card">
+                        <div class="service-title">Sales Team Builder</div>
+                        <div class="service-description">Sales process design, team structure</div>
+                        <input type="text" class="name-input" placeholder="Enter name..." data-role="sales-team">
+                    </div>
+                </div>
+                <div class="dependencies">
+                    <div class="dependencies-title">Critical Dependency</div>
+                    <div class="dependencies-text">Scaling requires systems infrastructure + working capital</div>
+                </div>
+            </div>
+            
+            <div class="arrow-down">↓</div>
+            
+            <!-- Stage 6 -->
+            <div class="stage">
+                <div class="stage-header">
+                    <div class="stage-number">6</div>
+                    <div class="stage-title">
+                        <h2>Internationalization</h2>
+                        <div class="stage-subtitle">Global Expansion</div>
+                    </div>
+                </div>
+                <div class="services-grid">
+                    <div class="service-card">
+                        <div class="service-title">Export Consultant</div>
+                        <div class="service-description">Market selection, regulatory requirements</div>
+                        <input type="text" class="name-input" placeholder="Enter name..." data-role="export">
+                    </div>
+                    <div class="service-card">
+                        <div class="service-title">International Tax Advisor</div>
+                        <div class="service-description">VAT/GST, transfer pricing, entity structure</div>
+                        <input type="text" class="name-input" placeholder="Enter name..." data-role="tax-advisor">
+                    </div>
+                    <div class="service-card">
+                        <div class="service-title">Localization Specialist</div>
+                        <div class="service-description">Product adaptation, cultural considerations</div>
+                        <input type="text" class="name-input" placeholder="Enter name..." data-role="localization">
+                    </div>
+                    <div class="service-card">
+                        <div class="service-title">Trade Finance Advisor</div>
+                        <div class="service-description">Currency hedging, letters of credit</div>
+                        <input type="text" class="name-input" placeholder="Enter name..." data-role="trade-finance">
+                    </div>
+                    <div class="service-card">
+                        <div class="service-title">International BD</div>
+                        <div class="service-description">Distributor/partner ID, trade show representation</div>
+                        <input type="text" class="name-input" placeholder="Enter name..." data-role="international-bd">
+                    </div>
+                </div>
+                <div class="dependencies">
+                    <div class="dependencies-title">Critical Dependency</div>
+                    <div class="dependencies-text">International expansion requires domestic proof-of-concept + adequate capitalization</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Save data to localStorage
+        function saveData() {
+            const inputs = document.querySelectorAll('.name-input');
+            const data = {};
+            
+            inputs.forEach(input => {
+                const role = input.getAttribute('data-role');
+                data[role] = input.value;
+            });
+            
+            localStorage.setItem('smeGrowthData', JSON.stringify(data));
+            alert('✅ Names saved successfully!');
+        }
+        
+        // Load data from localStorage
+        function loadData() {
+            const savedData = localStorage.getItem('smeGrowthData');
+            
+            if (!savedData) {
+                alert('ℹ️ No saved data found.');
+                return;
+            }
+            
+            const data = JSON.parse(savedData);
+            const inputs = document.querySelectorAll('.name-input');
+            
+            inputs.forEach(input => {
+                const role = input.getAttribute('data-role');
+                if (data[role]) {
+                    input.value = data[role];
+                }
+            });
+            
+            alert('✅ Names loaded successfully!');
+        }
+        
+        // Clear all data
+        function clearData() {
+            if (confirm('⚠️ Are you sure you want to clear all names? This cannot be undone.')) {
+                const inputs = document.querySelectorAll('.name-input');
+                inputs.forEach(input => {
+                    input.value = '';
+                });
+                localStorage.removeItem('smeGrowthData');
+                alert('✅ All names cleared!');
+            }
+        }
+        
+        // Auto-save on input change
+        document.querySelectorAll('.name-input').forEach(input => {
+            input.addEventListener('change', () => {
+                saveData();
+            });
+        });
+        
+        // Load data on page load
+        window.addEventListener('load', () => {
+            const savedData = localStorage.getItem('smeGrowthData');
+            if (savedData) {
+                loadData();
+            }
+        });
+    </script>
+</body>
+</html>
